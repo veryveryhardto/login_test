@@ -9,12 +9,15 @@ import 'package:login_test/Data/Services.dart';
 import 'package:login_test/Screen/AdministratorPage.dart';
 import 'package:login_test/Screen/SignUp.dart';
 import 'package:login_test/Screen/UserPage.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk_auth.dart';
 
 class SignIn extends StatefulWidget{
   _SignInState createState() => _SignInState();
 }
 class _SignInState extends State<SignIn>{
   final formkey =GlobalKey<FormState>();
+  bool _isKakaoTalkInstalled = false;
 
   List<Users> users=<Users>[];
   Users user=Users();
@@ -23,7 +26,28 @@ class _SignInState extends State<SignIn>{
   Digest? memberPW;
 
   void initState() {
+    _initKakaoTalkInstalled();
     super.initState();
+  }
+
+  _initKakaoTalkInstalled() async{
+    final installed = await isKakaoTalkInstalled();
+    print('kakao Install: '+installed.toString());
+
+    setState(() {
+      _isKakaoTalkInstalled=installed;
+    });
+  }
+
+  _issueAccessToken(String authCode) async{
+    try{
+      var token=await AuthApi.instance.issueAccessToken(authCode: authCode);
+      TokenManager.instance.toStore();
+      print(token);
+      Navigator.push(context, MaterialPageRoute(
+          builder: (context)=>SignIn(),
+        ));
+    }
   }
 
   @override

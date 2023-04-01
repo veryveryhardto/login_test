@@ -33,6 +33,12 @@ dependencies:
   http:
   crypto:
   multi_masked_formatter:
+  kakao_flutter_sdk: ^1.4.2
+  dio:
+  json_annotation:
+  package_info:
+  platform:
+  shared_preferences:
 
 
   # The following adds the Cupertino Icons font to your application.
